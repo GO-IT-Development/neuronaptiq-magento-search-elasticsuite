@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <!-- Quick search result page of Smile ElasticSuite: products and total from NeuronaptiQ -->
+    <type name="Magento\Search\Model\SearchEngine">
+        <plugin name="neuronaptiq_search_elasticsuite_search_engine"
+                type="NeuronaptiQ\SearchElasticsuite\Plugin\SearchEnginePlugin"/>
+    </type>
+
+    <!-- Logger of NeuronaptiQ_Search (own log file or Magento logger) -->
+    <type name="NeuronaptiQ\SearchElasticsuite\Plugin\SearchEnginePlugin">
+        <arguments>
+            <argument name="logger" xsi:type="object">NeuronaptiQ\Search\Logger\Logger</argument>
+        </arguments>
+    </type>
+
+    <!-- No "no exact results" spellcheck note for NeuronaptiQ results -->
+    <type name="Smile\ElasticsuiteCatalog\Model\ResourceModel\Product\Fulltext\Collection">
+        <plugin name="neuronaptiq_search_elasticsuite_spellcheck"
+                type="NeuronaptiQ\SearchElasticsuite\Plugin\SpellcheckPlugin"/>
+    </type>
+</config>
