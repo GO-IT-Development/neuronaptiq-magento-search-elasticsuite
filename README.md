@@ -176,7 +176,7 @@ Both are read:
 |---|---|
 | terms on `option_text_<code>` (option texts, OR) | `filters` group `<code>` with the option ids |
 | terms on `<code>` of a Yes/No attribute (`true`/`false`) | `filters` group `<code>` with `1`/`0` |
-| nested `category`, terms on `category.category_id` | `categoryIds` (context of the search) |
+| nested `category`, terms on `category.category_id` | `filters` group `category` with the category ids |
 | nested `price`, range on `price.price` (`gte`, `lt`; `lte` if from = to) | `price` `min`, `max`, `maxExclusive` for `lt` |
 
 Exclusions (`must_not`, `not`: blacklist of the search term), visibility, stock status and customer group of the

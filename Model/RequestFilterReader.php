@@ -23,7 +23,8 @@ use Smile\ElasticsuiteCore\Search\RequestInterface;
  * facets with multiselect, into the post filter of the request (page request). Both are read:
  * - option_text_<code> (terms with option texts) → group <code> with the option ids of the texts
  * - <code> of a Yes/No attribute (terms with true/false) → group <code> with 1/0
- * - nested category, category.category_id → hard category filter (context of the search)
+ * - nested category, category.category_id → group category, applied to the hits of the search like the other
+ *   groups, so the result matches the count of the category facet (SimpKo/project#360)
  * - nested price, range on price.price → price filter, lt is an exclusive maximum
  *
  * Exclusions (must_not, not) like the blacklist of the search term, the visibility and the stock status are handled
@@ -177,7 +178,7 @@ class RequestFilterReader
         }
 
         if ($field === self::FIELD_CATEGORY) {
-            return $selection->withCategoryIds($values);
+            return $selection->withCategories($values);
         }
 
         if (str_starts_with($field, AttributeOptions::OPTION_TEXT_PREFIX)) {
