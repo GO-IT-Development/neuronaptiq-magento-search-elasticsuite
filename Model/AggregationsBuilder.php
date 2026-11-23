@@ -12,7 +12,8 @@ namespace NeuronaptiQ\SearchElasticsuite\Model;
  * - price: bucket price.price, the ranges as histogram (key = start of the range)
  * - category: bucket categories, keyed by the category id
  * - indexed_attributes: products per attribute, ElasticSuite hides attributes below their minimum coverage
- *   (facet_min_coverage_rate). Estimated from the facet counts, at most the total (empty without hits)
+ *   (facet_min_coverage_rate). Estimated from the facet counts, at most the total (empty without hits); the price
+ *   covers all hits as soon as there is a price range
  *
  * Facets of unknown attributes are skipped. Without facets (old search service) the layered navigation stays empty.
  *
@@ -60,7 +61,9 @@ class AggregationsBuilder
             if ($group === self::GROUP_PRICE) {
                 $buckets = $this->buildPriceBuckets($facet);
                 $aggregations[self::BUCKET_PRICE] = ['buckets' => $buckets];
-                $coverage[$group] = array_sum(array_column($buckets, 'doc_count'));
+                // Like in ElasticSuite, where every product has a price in the index: products without price in the
+                // search service must not hide the price filter (SimpKo/project#348)
+                $coverage[$group] = $buckets !== [] ? $total : 0;
                 continue;
             }
 

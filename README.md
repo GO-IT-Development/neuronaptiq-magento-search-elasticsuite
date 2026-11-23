@@ -24,7 +24,8 @@ fails without ElasticSuite.
 
 ## Installation
 
-Via Composer:
+Via Composer (the package is available on packagist.org, no additional repository is needed; the main module
+`neuronaptiq/magento-search` is installed as dependency):
 
 ```bash
 composer require neuronaptiq/magento-search-elasticsuite
@@ -36,6 +37,10 @@ bin/magento cache:flush
 
 Manual installation from the zip package: extract it in the Magento root, it contains
 `app/code/NeuronaptiQ/SearchElasticsuite/`, then run the same `bin/magento` commands.
+
+Switching from the zip packages to Composer: remove `app/code/NeuronaptiQ/Search` and
+`app/code/NeuronaptiQ/SearchElasticsuite` before `composer require`, otherwise Magento finds the modules twice.
+Configuration values are kept, they are stored in the database.
 
 ## Configuration
 
@@ -146,7 +151,8 @@ Layered Navigation*, base currency, see its README). Additionally with ElasticSu
   *Facet max size* (values shown before "Show more") and *Facet sort order* "Admin sort order"; with the other
   sort orders the values keep the order of the API (by count). The coverage is estimated from the facet counts
   of the API, so an attribute may appear or disappear at slightly different hit counts than with ElasticSuite's
-  own result.
+  own result. The price filter counts as covering all hits (like in ElasticSuite, where every product has a price),
+  so hits without price do not hide it.
 - The API returns all values of a facet: "Show more" expands them in the browser instead of loading them from
   ElasticSuite (which would count with its own result).
 - Price slider: with *Price Navigation Step Calculation* "Manual" the slider moves in steps of
@@ -186,7 +192,7 @@ Facets (`Model/AggregationsBuilder`), requested with `facets` and the price rang
   step is `price_range_step` with the calculation *Manual*, otherwise 1, without maximum number of intervals
 - category: bucket `categories` keyed by the category id (drill-down into the children of the current category)
 - `indexed_attributes`: products per attribute, estimated from the facet counts (at most the total, empty
-  without hits). ElasticSuite requests only the facets of attributes above their minimum coverage
+  without hits; the price covers all hits as soon as there is a price range). ElasticSuite requests only the facets of attributes above their minimum coverage
   (*Facet coverage rate*, default 90 %), like with its own result
 
 The counts are disjunctive (the values of a group are counted without the selection in this group) and per
