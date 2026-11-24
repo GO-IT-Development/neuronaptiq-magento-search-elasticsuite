@@ -13,7 +13,7 @@ search logic, search suggestions, cross-sellings, tracking) comes from the main 
 
 ## Requirements
 
-- `NeuronaptiQ_Search` 2.1.0 or newer (filters and facets)
+- `NeuronaptiQ_Search` 2.3.0 or newer
 - For the filters of the search result page: a search service with filters, facets and price ranges, see
   *Layered navigation* in the README of `NeuronaptiQ_Search`
 - Smile ElasticSuite 2.11 (developed against 2.11.15.1 on Magento 2.4.8-p5)
@@ -136,6 +136,16 @@ flowchart TD
    (`Model/SearchState`, set by `SearchEnginePlugin`); after a fallback ElasticSuite's note stays. The
    spellcheck itself still runs (one additional OpenSearch request per search), it is part of ElasticSuite's
    request builder.
+
+### Search suggestions
+
+The search suggestions come from `NeuronaptiQ_Search` (see *Search suggestions* in its README): its products,
+and its categories if the API returns categories, replace those of ElasticSuite; the ElasticSuite search terms
+and attribute suggestions are kept. `Plugin/AutocompleteDataProviderPlugin` (around `getItems` of the ElasticSuite
+autocomplete data providers for products and categories) returns no suggestions for these replaced types, so
+ElasticSuite does not load and render products (price, image) or search categories that are dropped anyway. The
+ElasticSuite product search itself still runs while attribute suggestions are enabled, they are built from its
+facets. Without NeuronaptiQ suggestions (API error, no hits) ElasticSuite's suggestions are shown unchanged.
 
 ### Layered navigation (filters and facets)
 

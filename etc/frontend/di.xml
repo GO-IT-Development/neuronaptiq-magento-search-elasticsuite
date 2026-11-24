@@ -13,6 +13,16 @@
         </arguments>
     </type>
 
+    <!-- Autocomplete: no ElasticSuite products and categories where NeuronaptiQ delivers its own -->
+    <type name="Smile\ElasticsuiteCatalog\Model\Autocomplete\Product\DataProvider">
+        <plugin name="neuronaptiq_search_elasticsuite_autocomplete_product"
+                type="NeuronaptiQ\SearchElasticsuite\Plugin\AutocompleteDataProviderPlugin"/>
+    </type>
+    <type name="Smile\ElasticsuiteCatalog\Model\Autocomplete\Category\DataProvider">
+        <plugin name="neuronaptiq_search_elasticsuite_autocomplete_category"
+                type="NeuronaptiQ\SearchElasticsuite\Plugin\AutocompleteDataProviderPlugin"/>
+    </type>
+
     <!-- No "no exact results" spellcheck note for NeuronaptiQ results -->
     <type name="Smile\ElasticsuiteCatalog\Model\ResourceModel\Product\Fulltext\Collection">
         <plugin name="neuronaptiq_search_elasticsuite_spellcheck"
