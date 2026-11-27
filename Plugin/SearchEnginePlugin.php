@@ -184,8 +184,10 @@ class SearchEnginePlugin
             $result = $this->searchService->search($queryText, $page, $size, $sortOrder, $filters);
             if (!$isPageRequest && $page > 1 && empty($result['hits']) && $result['total'] === 0) {
                 // Page beyond the API's result pool (total 0): with the total of the first page, ElasticSuite limits
-                // the page to the last one instead of reporting no results
-                $result = $this->searchService->search($queryText, 1, $size, $sortOrder, $filters);
+                // the page to the last one instead of reporting no results. Counted only, the search service does
+                // not store it as search of the session (SimpKo/project#363)
+                $count = $this->searchService->search($queryText, 1, $size, $sortOrder, $filters->withCountOnly());
+                $result = ['hits' => [], 'total' => $count['total'], 'facets' => $count['facets']];
             }
         } catch (EmptySearchResultException $e) {
             // Empty results (e.g. for requests classified as bots) are not shown and must not be cached

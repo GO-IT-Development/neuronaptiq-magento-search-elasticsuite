@@ -13,7 +13,7 @@ search logic, search suggestions, cross-sellings, tracking) comes from the main 
 
 ## Requirements
 
-- `NeuronaptiQ_Search` 2.3.0 or newer
+- `NeuronaptiQ_Search` 2.7.0 or newer
 - For the filters of the search result page: a search service with filters, facets and price ranges, see
   *Layered navigation* in the README of `NeuronaptiQ_Search`
 - Smile ElasticSuite 2.11 (developed against 2.11.15.1 on Magento 2.4.8-p5)
@@ -58,6 +58,9 @@ calls `Magento\Search\Model\SearchEngine::search()` directly with its own reques
 - the count: the same request with `size = 0`, only for the total and the attribute counts of the layered
   navigation (`indexed_attributes`, also used for the coverage of the filters); it can come before the page
   request
+
+Category pages stay with ElasticSuite (merchandising, virtual categories): this module only handles the search
+result page, the setting *Enable Category Pages* of `NeuronaptiQ_Search` has no effect with ElasticSuite.
 
 Code flow of the search result page (classes of this module and of `NeuronaptiQ_Search` highlighted, dashed
 arrow = plugin interception; the search suggestions are handled by `NeuronaptiQ_Search` alone):
